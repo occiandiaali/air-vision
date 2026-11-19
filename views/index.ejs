@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>AERO // Particulate & Mist Visualizer</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+</head>
+<body>
+  <div class="ar-viewport">
+    <!-- Hidden raw video feed -->
+    <video id="videoInput" playsinline autoplay muted></video>
+    
+    <!-- Processed OpenCV output canvas -->
+    <canvas id="canvasOutput"></canvas>
+
+    <!-- Top AR Status Bar -->
+    <header class="hud-top">
+      <div class="brand">
+        <span class="pulse-dot" id="statusDot"></span>
+        <span>AERO-CV // PHASE 1</span>
+      </div>
+      <div class="metrics">
+        <span id="fpsCounter">0 FPS</span>
+        <span id="particleIndex">DENSITY: --</span>
+      </div>
+    </header>
+
+    <!-- Loading Overlay -->
+    <div id="loaderOverlay" class="loader-overlay">
+      <div class="spinner"></div>
+      <p id="loaderText">Initializing OpenCV.js WASM Engine...</p>
+      <button id="startCamBtn" class="btn-primary hidden">Enable Rear Camera</button>
+    </div>
+
+    <!-- Dynamic HTMX Info Card -->
+    <section id="modeInfoContainer" class="hud-info-card">
+      <%- include('partials/mode-info', { mode: initialMode }) %>
+    </section>
+
+    <!-- Bottom Interactive Controls -->
+    <footer class="hud-controls">
+      <div class="mode-selector">
+        <button 
+          class="mode-btn active" 
+          data-mode="mist"
+          hx-get="/hud/mode/mist" 
+          hx-target="#modeInfoContainer" 
+          hx-swap="innerHTML">
+          Mist Trail
+        </button>
+        <button 
+          class="mode-btn" 
+          data-mode="raw_particulate"
+          hx-get="/hud/mode/raw_particulate" 
+          hx-target="#modeInfoContainer" 
+          hx-swap="innerHTML">
+          Particulates
+        </button>
+        <button 
+          class="mode-btn" 
+          data-mode="density_heatmap"
+          hx-get="/hud/mode/density_heatmap" 
+          hx-target="#modeInfoContainer" 
+          hx-swap="innerHTML">
+          Cluster Map
+        </button>
+      </div>
+
+      <div class="sliders">
+        <label>
+          <span>Sensitivity</span>
+          <input type="range" id="sensitivitySlider" min="5" max="60" value="18" />
+        </label>
+        <label>
+          <span>Mist Persistence</span>
+          <input type="range" id="mistPersistenceSlider" min="50" max="96" value="85" />
+        </label>
+        <button id="flipCamBtn" class="icon-btn" title="Flip Camera">⟳</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Vision Processing Logic -->
+  <script src="/js/vision.js"></script>
+  <!-- OpenCV.js Official WASM Build -->
+  <script async src="https://cdn.jsdelivr.net/npm/@techstark/opencv-js@4.10.0-release.1/dist/opencv.min.js" onload="onOpenCvReady();"></script>
+</body>
+</html>

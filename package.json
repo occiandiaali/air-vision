@@ -1,0 +1,17 @@
+{
+  "name": "airvision",
+  "version": "1.0.0",
+  "description": "Real-time airborne particulate matter monitoring system",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "ejs": "^7.0.2",
+    "express": "^5.3.0"
+  }
+}
