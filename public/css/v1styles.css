@@ -1,0 +1,245 @@
+:root {
+  --bg-dark: #070b10;
+  --hud-glass: rgba(12, 20, 30, 0.72);
+  --accent-cyan: #00f0ff;
+  --accent-dim: rgba(0, 240, 255, 0.2);
+  --text-main: #e6f1ff;
+  --text-muted: #8899a6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+}
+
+body,
+html {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.ar-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#videoInput {
+  display: none;
+}
+
+#canvasOutput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* HUD Top */
+.hud-top {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffaa00;
+}
+
+.pulse-dot.active {
+  background: #00ff88;
+  box-shadow: 0 0 8px #00ff88;
+}
+
+.metrics {
+  display: flex;
+  gap: 12px;
+  color: var(--text-main);
+  background: var(--hud-glass);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--accent-dim);
+}
+
+/* Loader */
+.loader-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: rgba(7, 11, 16, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px;
+}
+
+.loader-overlay.hidden {
+  display: none;
+}
+
+.spinner {
+  width: 38px;
+  height: 38px;
+  border: 3px solid var(--accent-dim);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-primary {
+  background: var(--accent-cyan);
+  color: #001219;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn-primary.hidden {
+  display: none;
+}
+
+/* HTMX Info Card */
+.hud-info-card {
+  position: relative;
+  z-index: 10;
+  margin: auto 14px 10px 14px;
+  background: var(--hud-glass);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--accent-dim);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
+}
+
+.mode-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.badge {
+  font-size: 0.65rem;
+  background: var(--accent-dim);
+  color: var(--accent-cyan);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.mode-desc {
+  color: var(--text-main);
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.mode-tip {
+  color: var(--accent-cyan);
+  display: block;
+  font-size: 0.72rem;
+}
+
+/* Bottom Controls */
+.hud-controls {
+  position: relative;
+  z-index: 10;
+  background: rgba(7, 11, 16, 0.88);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--accent-dim);
+  padding: 12px 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mode-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.mode-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  padding: 8px 4px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mode-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.sliders {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sliders label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  gap: 4px;
+}
+
+input[type="range"] {
+  accent-color: var(--accent-cyan);
+  width: 100%;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--accent-dim);
+  color: var(--text-main);
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
